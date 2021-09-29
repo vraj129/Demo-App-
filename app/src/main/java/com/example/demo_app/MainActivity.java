@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private EditText name;
@@ -39,9 +41,14 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                d_name.setText(name.getText().toString());
-                e_name.setText(email.getText().toString());
-                saveData();
+
+                if(emailValidator(email));
+                {
+                    d_name.setText(name.getText().toString());
+                    e_name.setText(email.getText().toString());
+                    saveData();
+                }
+
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -80,5 +87,17 @@ public class MainActivity extends AppCompatActivity {
     {
         d_name.setText(name1);
         e_name.setText(email1);
+    }
+    public boolean emailValidator(EditText etMail) {
+        String emailToText = etMail.getText().toString();
+
+
+        if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
+            Toast.makeText(this, "Email Verified !", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(this, "Enter valid Email address !", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }
